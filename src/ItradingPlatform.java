@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 interface ItradingPlaform
 {
 	double getBid(String securityName);
@@ -8,14 +10,14 @@ interface ItradingPlaform
 
 	ArrayList<String> getSecurities();
 
-	bool bid();
+	boolean bid();
 
-	bool ask();
+	boolean ask();
 
-	bool clearBid();
+	boolean clearBid();
 
-	bool clearAsk();
+	boolean clearAsk();
 
-	bool closeConnection();
+	boolean closeConnection();
 
 }
