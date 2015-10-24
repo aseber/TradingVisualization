@@ -54,10 +54,6 @@ public class WindowDialog extends JDialog {
 		JLabel windowYSizeLabel = new JLabel();
 		windowXSizeField = new JTextField();
 		windowYSizeField = new JTextField();
-		drawSets = new JRadioButton();
-		drawCompares = new JRadioButton();
-		drawGets = new JRadioButton();
-		drawScreenUpdatesWhileSorting = new JRadioButton();
 		JButton CancelButton = new JButton();
 		JButton AcceptButton = new JButton();
 			
@@ -80,22 +76,6 @@ public class WindowDialog extends JDialog {
 		
 		windowYSizeField.setText(Integer.toString(VisualizationBase.WINDOW_SIZE.height));
 		contentPanel.add(windowYSizeField, CC.xywh(4, 4, 1, 1));
-		
-		drawSets.setText("Draw set updates");
-		drawSets.setSelected(VisualizationBase.DRAW_SET_UPDATES);
-		contentPanel.add(drawSets, CC.xywh(2, 6, 3, 1));
-		
-		drawCompares.setText("Draw compare updates");
-		drawCompares.setSelected(VisualizationBase.DRAW_COMPARE_UPDATES);
-		contentPanel.add(drawCompares, CC.xywh(2, 8, 3, 1));
-		
-		drawGets.setText("Draw get updates");
-		drawGets.setSelected(VisualizationBase.DRAW_GET_UPDATES);
-		contentPanel.add(drawGets, CC.xywh(2, 10, 3, 1));
-		
-		drawScreenUpdatesWhileSorting.setText("Draw screen updates while sorting");
-		drawScreenUpdatesWhileSorting.setSelected(VisualizationBase.DRAW_SCREEN_UPDATES_WHILE_SORTING);
-		contentPanel.add(drawScreenUpdatesWhileSorting, CC.xywh(2, 12, 3, 1));
 		
 		CancelButton.setText("Cancel");
 		CancelButton.addActionListener(new ActionListener() {
@@ -142,14 +122,9 @@ public class WindowDialog extends JDialog {
 		if (newSize.width != VisualizationBase.WINDOW_SIZE.width || newSize.height != VisualizationBase.WINDOW_SIZE.height) {
 		
 			VisualizationBase.WINDOW_SIZE.setSize(newSize);
-			VisualizationBase.VISUALIZATION_WINDOW.setWindowSize(VisualizationBase.WINDOW_SIZE);
+			//VisualizationBase.VISUALIZATION_WINDOW.setWindowSize(VisualizationBase.WINDOW_SIZE);
 			
 		}
-		
-		VisualizationBase.DRAW_GET_UPDATES = drawGets.isSelected();
-		VisualizationBase.DRAW_SET_UPDATES = drawSets.isSelected();
-		VisualizationBase.DRAW_COMPARE_UPDATES = drawCompares.isSelected();
-		VisualizationBase.DRAW_SCREEN_UPDATES_WHILE_SORTING = drawScreenUpdatesWhileSorting.isSelected();
 		
 		this.dispose();
 		
