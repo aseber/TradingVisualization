@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 interface ItradingPlaform
 {
-	double getBid(String securityName);
+	ArrayList<Double> getBids(String securityName);
 
-	double getAsk(String securityName);
+	ArrayList<Double> getAsks(String securityName);
 
 	double getCash();
 
