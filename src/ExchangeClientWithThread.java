@@ -38,7 +38,13 @@ public class ExchangeClientWithThread {
                 boolean exit = false;
                 int count = 0;
                 while(!exit){
-                    Thread.sleep(100);
+                    try{
+                        Thread.sleep(100);   
+                    }
+                    catch(Exception e){
+                        System.out.println("ERERER");
+                    }
+
                     pout.println(user + " " + pass);
                     pout.print("SECURITIES" + " ");
                     pout.println();
@@ -53,18 +59,13 @@ public class ExchangeClientWithThread {
                     catch(IOException e){
                         System.out.println("READLINE ERROR");
                     }
+                    System.out.println("\n" + count);
                     if(count++ == 10){
                         exit = true;
                     }
                 }
 
-                pout.close();
-                try{
-                    bin.close();
-                }
-                catch(IOException e){
-                    System.out.println("ANOTHER ERROR");
-                }
+                
             }
         };
 
