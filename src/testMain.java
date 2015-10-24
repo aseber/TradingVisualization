@@ -10,7 +10,7 @@ public class testMain
 	    String user = "TraderGators";
 	    String pass = "insidertrading";
 
-		tradingPlatform t = new tradingPlatform(host, port, user, pass);
+		TradingPlatform t = new TradingPlatform(host, port, user, pass);
 		
 		
 //		ArrayList<Double> a = t.getBids("SNY");

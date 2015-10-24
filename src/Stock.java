@@ -9,10 +9,10 @@ class Stock {
     private int maxLinkedListSize;
     public LinkedList<StockNode> stockTimes = new LinkedList<StockNode>();
 
-    public Stock (String ticker, double netWorth, double dividend, double volatility) {
+    public Stock (String ticker, double netWorth, double dividend, double volatility, double maxBid, double minAsk) {
         this.ticker = ticker;
-        this.maxLinkedListSize = VisualizationBase.STOCK_HISTORY_TIME * (1000 / VisualizationBase.STOCK_CHECK_INTERVAL) / 1000;
-        StockNode initialStockNode = new StockNode(netWorth, dividend, volatility, 0, System.currentTimeMillis());
+        this.maxLinkedListSize = 100;//(VisualizationBase.STOCK_HISTORY_TIME * (1000 / VisualizationBase.STOCK_CHECK_INTERVAL)) / 1000;
+        StockNode initialStockNode = new StockNode(netWorth, dividend, volatility, maxBid, minAsk, 0, System.currentTimeMillis());
         addNode(initialStockNode);
     }
     
@@ -29,15 +29,16 @@ class Stock {
     	
     }
     
-    boolean addNode(double netWorth, double dividend, double volatility) {
+    boolean addNode(double netWorth, double dividend, double volatility, double maxBid, double minAsk) {
     	if (stockTimes.size() > maxLinkedListSize) {
     		stockTimes.removeFirst();
     	}
     	
     	long currentTime = System.currentTimeMillis();
     	double velocity = (netWorth - stockTimes.getLast().netWorth) / (currentTime - stockTimes.getLast().currentTime);
+    	//System.out.println(currentTime - stockTimes.getLast().currentTime);
     	
-    	StockNode newStockNode = new StockNode(netWorth, dividend, volatility, velocity, currentTime);
+    	StockNode newStockNode = new StockNode(netWorth, dividend, volatility, maxBid, minAsk, velocity, currentTime);
     	return stockTimes.add(newStockNode);
     	
     }
@@ -50,7 +51,7 @@ class Stock {
     	return stockTimes.getLast().netWorth;
     }
     
-    /*double getCurrentMaxBid() {
+    double getCurrentMaxBid() {
     	if (stockTimes.isEmpty()) {
     		return 0;
     	}
@@ -64,7 +65,7 @@ class Stock {
     	}
     	
     	return stockTimes.getLast().minAsk;
-    }*/
+    }
     
     double getCurrentDividend() {
     	if (stockTimes.isEmpty()) {
