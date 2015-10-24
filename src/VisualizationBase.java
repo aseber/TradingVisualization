@@ -1,5 +1,5 @@
 import java.awt.Dimension;
-
+import org.graphstream.graph.*;
 import javax.swing.JFrame;
 
 public class VisualizationBase {
@@ -21,6 +21,7 @@ public class VisualizationBase {
 	
 	public static void main(String[] args) {
 		
+		StockGraph graph = new StockGraph();
 		VISUALIZATION_GUI = new VisualizationGUI();
 		VISUALIZATION_GUI.setTitle("TraderGators Visualization");
 		VISUALIZATION_GUI.setVisible(true);
