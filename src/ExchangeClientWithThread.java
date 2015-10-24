@@ -15,7 +15,7 @@ import java.util.*;
  *
  * @author atamarkin2
  */
-public class ExchangeClient {
+public class ExchangeClientWithThread {
 
     /**
      * @param args the command line arguments
@@ -52,6 +52,9 @@ public class ExchangeClient {
                     }
                     catch(IOException e){
                         System.out.println("READLINE ERROR");
+                    }
+                    if(count++ == 10){
+                        exit = true;
                     }
                 }
 
