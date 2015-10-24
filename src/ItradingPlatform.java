@@ -11,16 +11,18 @@ interface ItradingPlaform
 
 	double getCash();
 
-	ArrayList<String> getSecurities();
+	ArrayList<String[]> getSecurities();
 
-	boolean bid();
+	boolean ask(String ticker, double price, int shares);
 
-	boolean ask();
+	boolean bid(String ticker, double price, int shares);
 
 	boolean clearBid();
 
 	boolean clearAsk();
 
 	boolean closeConnection();
+	
+	boolean openConnection();
 
 }

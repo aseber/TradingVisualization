@@ -11,29 +11,20 @@ public class testMain
 	    String pass = "insidertrading";
 
 		tradingPlatform t = new tradingPlatform(host, port, user, pass);
-		try
-		{
-			t.openConnection();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try
-		{
 		
-	//		ArrayList<Double> a = t.getBids("SNY");
-			
-	//		for(int i = 0; i < a.size(); i++)
-	//		{
-	//			System.out.println(a.get(i));
-	//		}
-			
-			System.out.println(t.getCash());
-		}
-		catch(Exception E)
-		{
-			System.out.println(E.getMessage());
-		}
 		
-		t.closeConnection();
+//		ArrayList<Double> a = t.getBids("SNY");
+//			
+//		for(int i = 0; i < a.size(); i++)
+//		{
+//			System.out.println(a.get(i));
+//		}
+			
+		System.out.println(t.getCash());
+		
+		System.out.println(t.bid("TWTR", 34.401, 10));
+		
+		System.out.println(t.getCash());
 	}
+		
 }

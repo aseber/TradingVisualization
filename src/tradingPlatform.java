@@ -37,6 +37,8 @@ class tradingPlatform implements ItradingPlaform
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		openConnection();
 	}
 
 	public ArrayList<Double> getBids(String securityName)
@@ -66,7 +68,7 @@ class tradingPlatform implements ItradingPlaform
 			e.printStackTrace();
 		}
 
-		System.out.println(parse.toString());
+		//System.out.println(parse.toString());
 		String[] split = parse.toString().split(" ");
 		
 		ArrayList<Double> toReturn = new ArrayList<Double>();
@@ -109,21 +111,83 @@ class tradingPlatform implements ItradingPlaform
 		return Double.parseDouble(parse.toString());
 	}
 
-	public ArrayList<String> getSecurities()
+	public ArrayList<String[]> getSecurities()
 	{
 		return null;
 	}
-
-	public boolean bid()
+	
+	public ArrayList<String[]> securitiesList(string type)
 	{
-		return false;
+		if(!connection)
+		{
+			return  null;
+		}
+		
+		pout.print("type");
+		
+		StringBuilder parse = null;
+		try
+		{
+		  parse = pullValue();
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+String[] split = parse.toString().split(" ");
+		
+		ArrayList<Double> toReturn = new ArrayList<Double>();
+		
+		for(int i = 0; i < split.length; i++)
+		{
+			if(split[i].equals(bidOrAsk))
+			{
+				i+=2;
+				toReturn.add(Double.parseDouble(split[i]));
+				i++;
+				toReturn.add(Double.parseDouble(split[i]));
+			}
+		}
+		
 	}
 
-	public boolean ask()
+	public boolean bid(String ticker, double price, int shares)
 	{
-		return false;
+		return bidOrAsk(ticker, price, shares, "BID");
 	}
 
+	public boolean ask(String ticker, double price, int shares)
+	{
+		return bidOrAsk(ticker, price, shares, "ASK");
+	}
+
+	private boolean bidOrAsk(String ticker, double price, int shares, String type)
+	{
+		if(!connection)
+		{
+			return false;
+		}
+		
+		pout.print(type + " " +ticker + " " + price + " " + shares);
+		
+		StringBuilder parse = null;
+		try
+		{
+			parse = pullValue();
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		if(parse.toString().compareTo((type + "_OUT DONE")) == 0)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
 	public boolean clearBid()
 	{
 		return false;
@@ -132,6 +196,11 @@ class tradingPlatform implements ItradingPlaform
 	public boolean clearAsk()
 	{
 		return false;
+	}
+	
+	protected void finalize() 
+	{
+		closeConnection();
 	}
 
 	public boolean closeConnection()
@@ -153,12 +222,19 @@ class tradingPlatform implements ItradingPlaform
 		return true;
 	}
 
-	public boolean openConnection() throws IOException
+	public boolean openConnection()
 	{
-		connection = true;
-		pout = new PrintWriter(socket.getOutputStream());
-		bin = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		pout.println(user + " " + pass);
+		try{
+			pout = new PrintWriter(socket.getOutputStream());
+			bin = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			pout.println(user + " " + pass);
+			connection = true;
+		}
+		catch(Exception E)
+		{
+			System.out.println(E.getMessage());
+		}
+		
 		return true;
 	}
 	
@@ -169,11 +245,9 @@ class tradingPlatform implements ItradingPlaform
 		pout.println();
         pout.flush();
         String line;
-        while ((line = bin.readLine()) != null) {
-            ret.append(line);
-            ret.append("\n");
-        }
-
+        line = bin.readLine();
+        ret.append(line);
+        ret.append("\n");
         
         return ret;
 	}
