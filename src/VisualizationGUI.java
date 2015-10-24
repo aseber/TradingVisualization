@@ -31,7 +31,6 @@ public class VisualizationGUI extends JFrame {
 			}
 		});
 		
-		//setLayout(new FormLayout("5px, 1px:grow, 5px", "25px, 1px:grow, 5px"));
 		setLayout(new FormLayout("5px, 1px:grow, 1px:grow, 1px:grow, 1px:grow, 1px:grow, 5px", "25px, 1px:grow, 1px:grow, 5px"));
 		
 		fileMenuGroup.add(fileExit);
