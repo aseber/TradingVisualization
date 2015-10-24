@@ -21,6 +21,7 @@ class tradingPlatform implements ItradingPlaform
 	private int port;
 	private String user;
 	private String pass;
+	private boolean connection;
 
 	tradingPlatform(String host, int port, String user, String pass)
 	{
@@ -38,15 +39,21 @@ class tradingPlatform implements ItradingPlaform
 		}
 	}
 
-	public double getBid(String securityName)
+	public ArrayList<Double> getBids(String securityName)
 	{
-		try 
+		return getOrder(securityName, "BID");
+	}
+	
+	public ArrayList<Double> getAsks(String securityName)
+	{
+		return getOrder(securityName, "ASK");
+	}
+	
+	private ArrayList<Double> getOrder(String securityName, String bidOrAsk)
+	{		
+		if(!connection)
 		{
-			openConnection();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
+			return null;
 		}
 		//HelloWorld
 		pout.print("ORDERS " + securityName);
@@ -54,23 +61,52 @@ class tradingPlatform implements ItradingPlaform
 		StringBuilder parse = null;
 		try
 		{
-			parse = closeConnectionMethod();
+			parse = pullValue();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		System.out.println(parse.toString());
-		return 0;
+		String[] split = parse.toString().split(" ");
+		
+		ArrayList<Double> toReturn = new ArrayList<Double>();
+		
+		for(int i = 0; i < split.length; i++)
+		{
+			if(split[i].equals(bidOrAsk))
+			{
+				i+=2;
+				toReturn.add(Double.parseDouble(split[i]));
+				i++;
+				toReturn.add(Double.parseDouble(split[i]));
+			}
+		}
+		
+		return toReturn;
 	}
 
-	public double getAsk(String securityName)
-	{
-		return 0;
-	}
 
 	public double getCash()
 	{
-		return 0;
+		if(!connection)
+		{
+			return (Double) null;
+		}
+		
+		pout.print("MY_CASH");
+		
+		StringBuilder parse = null;
+		try
+		{
+			parse = pullValue();
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		parse.delete(0, 12);
+		
+		return Double.parseDouble(parse.toString());
 	}
 
 	public ArrayList<String> getSecurities()
@@ -100,29 +136,44 @@ class tradingPlatform implements ItradingPlaform
 
 	public boolean closeConnection()
 	{
-		return false;
+		try
+		{
+	        pout.println("CLOSE_CONNECTION");
+	        pout.flush();
+			pout.close();
+        	bin.close();
+		}
+		catch(Exception E)
+		{
+			E.printStackTrace();
+			return false;
+		}
+		connection = false;
+		
+		return true;
 	}
 
-	private void openConnection() throws IOException
+	public boolean openConnection() throws IOException
 	{
+		connection = true;
 		pout = new PrintWriter(socket.getOutputStream());
 		bin = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		pout.println(user + " " + pass);
+		return true;
 	}
+	
 
-	private StringBuilder closeConnectionMethod() throws IOException
+	private StringBuilder pullValue() throws IOException
 	{
 		StringBuilder ret = new StringBuilder();
 		pout.println();
-        pout.println("CLOSE_CONNECTION");
         pout.flush();
         String line;
         while ((line = bin.readLine()) != null) {
             ret.append(line);
             ret.append("\n");
         }
-        pout.close();
-        bin.close();
+
         
         return ret;
 	}
