@@ -1,7 +1,8 @@
-import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -11,11 +12,30 @@ import com.jgoodies.forms.layout.FormLayout;
 public class VisualizationGUI extends JFrame {
 	
 	private static final long serialVersionUID = 7918519549017633056L;
-
+	HashMap<String, Stock> stocks = new HashMap<String, Stock>();
+	HashMap<String, StockGraph> stockGraphs = new HashMap<String, StockGraph>();
+	
 	VisualizationGUI() {
 		
+		initializeStocks();
+		initializeGraphs();
 		initializeGUI();
 		
+	}
+	
+	private void initializeStocks() {
+		ArrayList<String[]> worths = VisualizationBase.ourTradingPlatform.getAllSecurities();
+		
+		for (String[] worth : worths) {
+			Stock stock = new Stock(worth[0], Double.parseDouble(worth[1]), Double.parseDouble(worth[2]), Double.parseDouble(worth[3]));
+			stocks.put(worth[0], stock);
+		}
+	}
+	
+	private void initializeGraphs() {
+		for (Stock stock : stocks.values()) {
+			stockGraphs.put(stock.ticker, new StockGraph(stock));
+		}
 	}
 	
 	private void initializeGUI() {
