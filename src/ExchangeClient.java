@@ -34,8 +34,9 @@ public class ExchangeClient {
         BufferedReader bin = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         pout.println(user + " " + pass);
         for (int i = 0; i < args.length; i++) {
-            pout.println(args[i]);
+            pout.print(args[i] + " ");
         }
+        pout.println();
         pout.println("CLOSE_CONNECTION");
         pout.flush();
         String line;
